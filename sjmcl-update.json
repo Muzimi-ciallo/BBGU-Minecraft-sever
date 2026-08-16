@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "files": [
     {
+      "path": "config/占位喵",
+      "sha1": "cedd5fe7828568a45a256f789b9e861dfa47093c",
+      "size": 11
+    },
+    {
       "path": "mods/.gitkeep",
       "sha1": "6a6c5d53a5a9c8432404cec9cb37ad5f1272d558",
       "size": 24
