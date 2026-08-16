@@ -11,6 +11,11 @@
       "path": "resourcepacks/资源包占位符",
       "sha1": "cedd5fe7828568a45a256f789b9e861dfa47093c",
       "size": 11
+    },
+    {
+      "path": "shaderpacks/占位喵",
+      "sha1": "cedd5fe7828568a45a256f789b9e861dfa47093c",
+      "size": 11
     }
   ],
   "baseUrl": "https://raw.githubusercontent.com/Muzimi-ciallo/BBGU-Minecraft-sever/main/modpack"
