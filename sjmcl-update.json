@@ -6,11 +6,6 @@
       "path": "mods/.gitkeep",
       "sha1": "6a6c5d53a5a9c8432404cec9cb37ad5f1272d558",
       "size": 24
-    },
-    {
-      "path": "resourcepacks/占位符",
-      "sha1": "15026cea774bc4296c140873975119782dc2ce58",
-      "size": 20
     }
   ],
   "baseUrl": "https://raw.githubusercontent.com/Muzimi-ciallo/BBGU-Minecraft-sever/main/modpack"
