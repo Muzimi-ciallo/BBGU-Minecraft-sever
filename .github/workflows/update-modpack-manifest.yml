@@ -25,7 +25,7 @@ jobs:
           python-version: '3.12'
 
       - name: Generate manifest
-        run: python scripts/generate_sjmcl_update_manifest.py modpack sjmcl-update.json
+                run: python scripts/generate_sjmcl_update_manifest.py modpack sjmcl-update.json --base-url "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/modpack"
 
       - name: Commit manifest
         run: |
