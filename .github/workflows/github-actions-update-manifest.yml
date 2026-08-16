@@ -1,0 +1,41 @@
+name: Update SJMCL modpack manifest
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'modpack/**'
+      - 'scripts/generate_sjmcl_update_manifest.py'
+      - '.github/workflows/update-modpack-manifest.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Generate manifest
+        run: python scripts/generate_sjmcl_update_manifest.py modpack sjmcl-update.json --base-url "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/modpack"
+
+      - name: Commit manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add sjmcl-update.json
+          if git diff --cached --quiet; then
+            echo "manifest unchanged"
+            exit 0
+          fi
+          git commit -m "chore: update sjmcl-update.json"
+          git push
+
