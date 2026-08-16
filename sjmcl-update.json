@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "files": [
     {
-      "path": "mods/rojiuramod-Neoforge1.21.1-嘤嘤嘤.jar",
-      "sha1": "a7c1924b76d4f8000b56749fa1508f4cf25b22d3",
-      "size": 14350865
+      "path": "mods/.gitkeep",
+      "sha1": "6a6c5d53a5a9c8432404cec9cb37ad5f1272d558",
+      "size": 24
     }
   ],
   "baseUrl": "https://raw.githubusercontent.com/Muzimi-ciallo/BBGU-Minecraft-sever/main/modpack"
