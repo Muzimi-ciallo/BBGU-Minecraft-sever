@@ -1,12 +1,7 @@
 {
   "name": "modpack",
-  "version": "1.1.2",
+  "version": "1.0.0",
   "files": [
-    {
-      "path": "config/test",
-      "sha1": "85f2b1c28ea4d6c4b3aed3ab880822e458989fb3",
-      "size": 6
-    },
     {
       "path": "config/控制文件占位喵",
       "sha1": "cedd5fe7828568a45a256f789b9e861dfa47093c",
