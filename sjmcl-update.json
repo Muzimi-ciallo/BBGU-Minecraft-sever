@@ -1,1 +1,32 @@
-{   "name": "modpack",   "version": "1.1.3",   "files": [     {       "path": "config/控制文件占位喵",       "sha1": "cedd5fe7828568a45a256f789b9e861dfa47093c",       "size": 11     },     {       "path": "mods/modtest",       "sha1": "ddbe5bf9f27d837e4ef601241d17184b4c6ac9f9",       "size": 11     },     {       "path": "resourcepacks/资源包占位符",       "sha1": "cedd5fe7828568a45a256f789b9e861dfa47093c",       "size": 11     },     {       "path": "shaderpacks/光影占位喵",       "sha1": "cedd5fe7828568a45a256f789b9e861dfa47093c",       "size": 11     }   ],   "baseUrl": "https://v4.gh-proxy.org/https://raw.githubusercontent.com/Muzimi-ciallo/BBGU-Minecraft-sever/main/modpack" }
+{
+  "name": "modpack",
+  "version": "1.0.0",
+  "files": [
+    {
+      "path": "config/控制文件占位喵",
+      "sha1": "cedd5fe7828568a45a256f789b9e861dfa47093c",
+      "size": 11
+    },
+    {
+      "path": "mods/modtest",
+      "sha1": "ddbe5bf9f27d837e4ef601241d17184b4c6ac9f9",
+      "size": 11
+    },
+    {
+      "path": "mods/test1",
+      "sha1": "bdae181125022cb964da0b48c81abfc7dc85641d",
+      "size": 7
+    },
+    {
+      "path": "resourcepacks/资源包占位符",
+      "sha1": "cedd5fe7828568a45a256f789b9e861dfa47093c",
+      "size": 11
+    },
+    {
+      "path": "shaderpacks/光影占位喵",
+      "sha1": "cedd5fe7828568a45a256f789b9e861dfa47093c",
+      "size": 11
+    }
+  ],
+  "baseUrl": "https://v4.gh-proxy.org/https://raw.githubusercontent.com/Muzimi-ciallo/BBGU-Minecraft-sever/main/modpack"
+}
