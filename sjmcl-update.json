@@ -13,6 +13,11 @@
       "size": 24
     },
     {
+      "path": "mods/test",
+      "sha1": "ddbe5bf9f27d837e4ef601241d17184b4c6ac9f9",
+      "size": 11
+    },
+    {
       "path": "resourcepacks/资源包占位符",
       "sha1": "cedd5fe7828568a45a256f789b9e861dfa47093c",
       "size": 11
