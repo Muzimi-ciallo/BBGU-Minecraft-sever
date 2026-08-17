@@ -1,9 +1,9 @@
 {
   "name": "modpack",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "files": [
     {
-      "path": "config/占位喵",
+      "path": "config/控制文件占位喵",
       "sha1": "cedd5fe7828568a45a256f789b9e861dfa47093c",
       "size": 11
     },
