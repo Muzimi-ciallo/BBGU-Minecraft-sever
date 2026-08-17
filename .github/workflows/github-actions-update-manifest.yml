@@ -1,41 +1,42 @@
 name: Update SJMCL modpack manifest
 
 on:
-  push:
+  pu sh:
     branches: [ main ]
     paths:
-      - 'modpack/**'
-      - 'scripts/generate_sjmcl_update_manifest.py'
-      - '.github/workflows/update-modpack-manifest.yml'
-  workflow_dispatch:
+      -  'modpack/**'
+      - 'scripts/generate_sjmcl _update_manifest.py'
+      - '.github/workflo ws/update-modpack-manifest.yml'
+  workflow_di spatch:
 
 permissions:
   contents: write
 
-jobs:
+jobs :
   update-manifest:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-late st
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Setu p Python
+        uses: actions/setup-python@v 5
         with:
-          python-version: '3.12'
+          python-version: '3. 12'
 
       - name: Generate manifest
-        run: python scripts/generate_sjmcl_update_manifest.py modpack sjmcl-update.json --base-url "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/modpack"
+         run: python scripts/generate_sjmcl_update_man ifest.py modpack sjmcl-update.json --base-url  "https://raw.githubusercontent.com/${{ githu b.repository }}/${{ github.ref_name }}/modpac k"
 
       - name: Commit manifest
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+        run : |
+          git config user.name "github-ac tions[bot]"
+          git config user.email " github-actions[bot]@users.noreply.github.com" 
           git add sjmcl-update.json
-          if git diff --cached --quiet; then
-            echo "manifest unchanged"
-            exit 0
+           if git diff --cached --quiet; then
+             echo "manifest unchanged"
+            exi t 0
           fi
-          git commit -m "chore: update sjmcl-update.json"
-          git push
+          git commit -m "cho re: update sjmcl-update.json"
+          git p ush
 
+ 
