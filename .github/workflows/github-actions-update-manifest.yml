@@ -38,3 +38,19 @@ jobs:
           fi
           git commit -m "chore: update sjmcl-update.json"
           git push
+      - name: Sync main to Gitee
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+          GITEE_OWNER: Muzimimiao
+          GITEE_REPO: BBGU-Minecraft-sever
+        run: |
+          git fetch origin main
+          git checkout main
+          git pull --ff-only origin main || true
+          git remote add gitee "https://${GITEE_OWNER}:${GITEE_TOKEN}@gitee.com/${GITEE_OWNER}/${GITEE_REPO}.git"
+          if git push gitee main:main 2>&1; then
+            echo "Pushed main to Gitee."
+          else
+            echo "Non-fast-forward; forcing mirror update..."
+            git push --force gitee main:main 2>&1 || echo "Force push failed."
+          fi
