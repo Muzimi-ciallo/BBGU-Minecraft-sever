@@ -1,7 +1,7 @@
 这是服务于北部湾大学Minecraft多人服务器的整合包分发与增量更新仓库
 
 增量更新逻辑
-repo/
+> repo/
   modpack/                ← 整合包内容（mods/config/resourcepacks/shaderpacks 都放这里）
   scripts/generate_sjmcl_update_manifest.py
   .github/workflows/update-modpack-manifest.yml
