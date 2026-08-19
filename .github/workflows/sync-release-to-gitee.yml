@@ -1,0 +1,85 @@
+name: Sync release to Gitee (BBGU)
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Release tag to sync, e.g. 1.0.0"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  sync-gitee:
+    runs-on: ubuntu-latest
+    env:
+      GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+      GITEE_OWNER: Muzimimiao
+      GITEE_REPO: BBGU-Minecraft-sever
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Prepare metadata
+        id: meta
+        shell: bash
+        run: |
+          TAG="${{ github.event.inputs.release_tag || github.event.release.tag_name }}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Download mrpack assets from GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: |
+          gh release download "$TAG" --repo "${{ github.repository }}" --pattern "*.mrpack" --dir .
+          ls -la *.mrpack 2>/dev/null || true
+
+      - name: Create Gitee release (if missing)
+        shell: bash
+        env:
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: |
+          API="https://gitee.com/api/v5/repos/${GITEE_OWNER}/${GITEE_REPO}"
+          EXISTS=$(curl -fsS -X GET "${API}/releases/tags/${TAG}?access_token=${GITEE_TOKEN}" 2>/dev/null || true)
+          if echo "$EXISTS" | grep -q '"id"'; then
+            echo "Gitee release ${TAG} already exists."
+          else
+            curl -fsS -X POST "${API}/releases" \
+              -H "Content-Type: application/json" \
+              -d "{\"access_token\":\"${GITEE_TOKEN}\",\"tag_name\":\"${TAG}\",\"name\":\"湾大服务器整合包 ${TAG}\",\"body\":\"自动同步自 GitHub Release\",\"target_commitish\":\"main\"}"
+            echo "Created Gitee release ${TAG}."
+          fi
+
+      - name: Upload mrpack assets to Gitee release
+        shell: bash
+        env:
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: |
+          API="https://gitee.com/api/v5/repos/${GITEE_OWNER}/${GITEE_REPO}"
+          REL_ID=$(curl -fsS -X GET "${API}/releases/tags/${TAG}?access_token=${GITEE_TOKEN}" | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
+          for f in *.mrpack; do
+            [ -f "$f" ] || continue
+            curl -fsS --connect-timeout 30 --max-time 900 -X POST "${API}/releases/${REL_ID}/attach_files" \
+              -F "access_token=${GITEE_TOKEN}" \
+              -F "file=@${f}" || echo "Upload failed for $f (may already exist), continuing."
+          done
+
+      - name: Sync main to Gitee
+        shell: bash
+        run: |
+          git fetch origin main
+          git checkout main
+          git pull --ff-only origin main || true
+          git remote add gitee "https://${GITEE_OWNER}:${GITEE_TOKEN}@gitee.com/${GITEE_OWNER}/${GITEE_REPO}.git"
+          if git push gitee main:main 2>&1; then
+            echo "Pushed main to Gitee."
+          else
+            echo "Non-fast-forward; forcing mirror update..."
+            git push --force gitee main:main 2>&1 || echo "Force push failed."
+          fi
