@@ -31,14 +31,18 @@ jobs:
           TAG="${{ github.event.inputs.release_tag || github.event.release.tag_name }}"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
-      - name: Download mrpack assets from GitHub release
+      - name: Download modpack assets from GitHub release
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ steps.meta.outputs.tag }}
         run: |
-          gh release download "$TAG" --repo "${{ github.repository }}" --pattern "*.mrpack" --dir .
-          ls -la *.mrpack 2>/dev/null || true
+          # Download .mrpack and .zip modpack assets. Tolerate a missing
+          # release or no matching assets so a deleted/edited release does not
+          # fail the whole sync.
+          gh release download "$TAG" --repo "${{ github.repository }}" --pattern "*.mrpack" --dir . 2>/dev/null || true
+          gh release download "$TAG" --repo "${{ github.repository }}" --pattern "*.zip" --dir . 2>/dev/null || true
+          ls -la *.mrpack *.zip 2>/dev/null || true
 
       - name: Create Gitee release (if missing)
         shell: bash
@@ -63,7 +67,7 @@ jobs:
         run: |
           API="https://gitee.com/api/v5/repos/${GITEE_OWNER}/${GITEE_REPO}"
           REL_ID=$(curl -fsS -X GET "${API}/releases/tags/${TAG}?access_token=${GITEE_TOKEN}" | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
-          for f in *.mrpack; do
+          for f in *.mrpack *.zip; do
             [ -f "$f" ] || continue
             curl -fsS --connect-timeout 30 --max-time 900 -X POST "${API}/releases/${REL_ID}/attach_files" \
               -F "access_token=${GITEE_TOKEN}" \
