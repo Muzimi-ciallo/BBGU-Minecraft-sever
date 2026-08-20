@@ -69,6 +69,13 @@ jobs:
           REL_ID=$(curl -fsS -X GET "${API}/releases/tags/${TAG}?access_token=${GITEE_TOKEN}" | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
           for f in *.mrpack *.zip; do
             [ -f "$f" ] || continue
+            # Gitee release attachments are limited to 100 MB per file; skip
+            # larger files explicitly instead of letting the upload time out.
+            SIZE=$(stat -c%s "$f" 2>/dev/null || echo 0)
+            if [ "$SIZE" -gt 104857600 ]; then
+              echo "Skipping $f (${SIZE} bytes > Gitee 100MB attachment limit)."
+              continue
+            fi
             curl -fsS --connect-timeout 30 --max-time 900 -X POST "${API}/releases/${REL_ID}/attach_files" \
               -F "access_token=${GITEE_TOKEN}" \
               -F "file=@${f}" || echo "Upload failed for $f (may already exist), continuing."
